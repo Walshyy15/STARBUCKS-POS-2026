@@ -4,7 +4,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const customerController = require('../controllers/customerController')
-let path = (__dirname.split('/controllers')[0]+'/public')
+const nodePath = require('path')
+let path = nodePath.join(nodePath.dirname(__dirname), 'public')
 function translateSize(input){
     let string = input.toLowerCase()
     if(string === 'large'|| string === 'venti'){

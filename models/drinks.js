@@ -72,7 +72,6 @@ coreDrinks.brewed.push(new Brewed("Dark Roast",new DrinkBuild(false,[''],['','',
 coreDrinks.brewed.push(new Brewed("Blonde Roast",new DrinkBuild(false,[''],['','','','',null],[2,3,4,5,null],'','','','BRC'),null,'Blonde Roast',true,false))
 coreDrinks.brewed.push(new Brewed("Decaf Pike Place Roast",new DrinkBuild(false,['D'],['','','','',null],[2,3,4,5,null],'','','','DPPR'),null,'Decaf Pike',true,false))
 coreDrinks.brewed.push(new Brewed("Hot Coffee Refill",new DrinkBuild(false,[''],['','','','',null],[2,3,4,5,null],'','','','PPRR'),null,'Hot Coffee Refill',true,false))
-console.log(coreDrinks.brewed.length)
 class Espresso{
     constructor(Name,Steps,hotContents,HotBoolean,IcedBoolean,IcedBuild,ABBR,MenuBuildHot,MenuBuildIced){
         this.name = Name
@@ -110,6 +109,12 @@ coreDrinks.espresso.push(new Espresso('Chocolate Almondmilk Shaken Espresso',['q
 coreDrinks.espresso.push(new Espresso('Toasted Vanilla Oat Shaken Espresso',['que shots','pump syrup into shaker','add ice to shaker','pour shots into shakes','shake ten times','pour into cup','pour milk to 1/4" below top'],{'oatmilk':'13%','espresso foam':'22%','espresso':'58%','syrup':'7%'},false,true,{},'Tstd Oat Shkn Espr',
                                     null,
                                     new DrinkBuild(true,['B'],[null,2,3,4,null],[null,3,4,6,null],'TV','O','','TOSE')))
+coreDrinks.espresso.push(new Espresso('Iced Blue Coconut Matcha',['add mango flavor','add milk and matcha','add ice','top with toasted coconut cold foam'],{'toasted coconut cold foam':'15%','matcha':'35%','milk':'43%','syrup':'7%'},false,true,{},'Blue Coconut Matcha',
+                                    null,
+                                    new DrinkBuild(true,[''],[null,'','','',null],[null,2,3,4,null],'MG','C',['MT','TCF'],'IBCM')))
+coreDrinks.espresso.push(new Espresso('Iced Horchata Shaken Espresso',['que shots','pump horchata syrup into shaker','add ice to shaker','pour shots into shaker','shake ten times','pour into cup','top with oatmilk'],{'oatmilk':'13%','espresso foam':'22%','espresso':'58%','syrup':'7%'},false,true,{},'Horchata Shkn Esp',
+                                    null,
+                                    new DrinkBuild(true,['B'],[null,2,3,4,null],[null,3,4,6,null],'HCH','O','','IHSE')))
 coreDrinks.espresso.push(new Espresso('Latte',['steam','que','pump syrup','pour'],{'room':'1%','foam':'15%','steamed milk':'71%','espresso':'13%'},true,true,{'room':'1%','milk':'86%','espresso':'13%'},'Latte',
                                     new DrinkBuild(false,[''],[1,1,2,2,null],[2,3,4,5,null],'','%','F','L'),
                                     new DrinkBuild(true,[''],[null,1,2,3,null],[null,3,4,6,null],'','%','','L')))
@@ -188,6 +193,8 @@ coreDrinks.blended.push(new Frappucino('Caramel Ribbon Crunch Crème Frappucino'
 new DrinkBuild(true,'',[null,'','','',null],[null,2,3,4,null],'DC','W',['WC','CCT'],'CRCF'),null))
 coreDrinks.blended.push(new Frappucino('Chocolate Cookie Crumble Crème Frappucino',['pour milk','add to blender','pump flavor','add ice','add base','blend','pour into cup','top with whipped cream'],['milk','mocha syrup','java chips','ice'],true,'mocha drizzle,cookie crumble',['cookie crumble','whipped cream'],"Choc Cookie Crm Frapp",false,true, 
 new DrinkBuild(true,'',[null,'','','',null],[null,2,3,4,null],'M','W',['WC','MDR','JC'],'CCRF'),null))
+coreDrinks.blended.push(new Frappucino('Horchata Frappucino',['pump coffee','pour milk','add to blender','pump horchata syrup','add ice','add base','blend','pour into cup','top with whipped cream and cinnamon'],['milk','frapp roast','horchata syrup','ice'],true,'cinnamon',false,'Horchata Frapp',false,true, new DrinkBuild(true,'',[null,'','','',null],[null,2,3,4,null],'HCH','W',['FR','WC','CP'],'HCHF'),null))
+coreDrinks.blended.push(new Frappucino('S’mores Frappucino',['add marshmallow whipped cream and milk chocolate sauce to cup','pump coffee','pour milk','add to blender','pump vanilla syrup','add ice','add base','blend','pour into cup','top with whipped cream and graham cracker crumble'],['milk','frapp roast','vanilla syrup','ice'],true,'graham cracker crumble',['marshmallow whipped cream','milk chocolate sauce'],'S’mores Frapp',false,true, new DrinkBuild(true,'',[null,'','','',null],[null,2,3,4,null],'V','W',['FR','MWC','MCS','GCT'],'SMF'),null))
 coreDrinks.blended.push(new Frappucino('Blended Strawberry Lemonade',['pour milk','add to blender','add ice','add base','blend','pour into cup'],['lemonade','strawberry puree','ice'],false,'',false,'Blnded Str Lem',false,true, 
 new DrinkBuild(true,'',[null,'','','',null],[null,2,3,4,null],'','',['LE','SP'],'BSL'),null))
 
@@ -291,6 +298,13 @@ coreDrinks.other.push(new Other('Caramel Apple Spice',new DrinkBuild(false,'',['
 coreDrinks.other.push(new Other('Strawberry Acai Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['SB','H2O','SP'],'SAR'),'Straw Acai',false, true))
 coreDrinks.other.push(new Other('Mango Dragonfruit Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['MB','H2O','MDP'],'MDR'),'Mango Drgonfruit',false, true))
 coreDrinks.other.push(new Other('Pineapple Passionfruit Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['MB','H2O','PFP'],'PPR'),'Pineapple Passionfruit',false, true))
+coreDrinks.other.push(new Other('Blue Coconut Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['BCB','H2O','SRI'],'BCR'),'Blue Coconut Rfr',false, true))
+coreDrinks.other.push(new Other('Blue Coconut Lemonade Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['BCB','LEM','SRI'],'BCLR'),'Blue Coconut Lem',false, true))
+coreDrinks.other.push(new Other('Blue Coconut Drink',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','C',['BCB','SRI'],'BCD'),'Blue Coconut Drink',false, true))
+coreDrinks.other.push(new Other('Tropical Butterfly Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['TBB','H2O','MPP'],'TBR'),'Tropical Butterfly',false, true))
+coreDrinks.other.push(new Other('Tropical Butterfly Lemonade Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['TBB','LEM','MPP'],'TBLR'),'Tropical Bfly Lem',false, true))
+coreDrinks.other.push(new Other('Blended Mango Dragonfruit Lemonade Energy Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['MB','LEM','MDP','ENRG'],'BMDLE'),'Bld Mngo Drgn Energy',false, true))
+coreDrinks.other.push(new Other('Blended Mango Strawberry Lemonade Energy Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['MB','LEM','SRI','ENRG'],'BMSLE'),'Bld Mngo Str Energy',false, true))
 coreDrinks.other.push(new Other('Cup Of Water',null, new DrinkBuild(true,'',[null,'','','',''],[null,'','','',''],'','',['H2O'],'W'),'Cup Of Water',false, true))
 coreDrinks.other.push(new Other('Strawberry Acai Lemonade Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['SB','LM','SAP'],'SALR'),'Strw Acai Lem',false, true))
 coreDrinks.other.push(new Other('Mango Dragonfruit Lemonade Refresher',null, new DrinkBuild(true,'',[null,'','','',''],[null,2,3,4,6],'','',['MB','LM','MDP'],'SALR'),'Mngo Drgonfruit Lem',false, true))

@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "check": "node -c server.js && node -c routes/API.js && node -c models/drinks.js && node -c public/main.js && node -c 'public/Core Drinks/coreDrinks.js'"
   },
   "repository": {
     "type": "git",

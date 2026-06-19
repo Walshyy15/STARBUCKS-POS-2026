@@ -15,12 +15,12 @@ function nameShortener(name){
     
 }
 
-let heroku = 'https://coffee-trainer.herokuapp.com/api/coredrinks'
-let local = 'http://localhost:8000/api/coredrinks'
+const apiBaseUrl = window.location.origin
+const coreDrinksUrl = `${apiBaseUrl}/api/coreDrinks`
 async function apiRequest(){
     
     try{
-        const response = await fetch(heroku)
+        const response = await fetch(coreDrinksUrl)
         const data = await response.json()
 
         Object.keys(data).forEach((element)=>{

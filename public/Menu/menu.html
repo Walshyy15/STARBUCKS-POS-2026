@@ -6,27 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../home.css"> 
     <link rel="stylesheet" href="../Menu/menu.css"> 
-    <script src="https://kit.fontawesome.com/082f4a75c7.js" crossorigin="anonymous"></script>
 
-    <title>POS Sim</title>
-    <link rel="icon" type="image/x-icon" href="../IMG/Favicon.ico">
+    <title>Starbucks POS Simulator</title>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z6EZZ2FXV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-9Z6EZZ2FXV');
-</script>
 <body>
     <header>
         <h1>POINT OF SALE (POS) SIMULATOR</h1>
+        <button class="resetLayoutBtn" id="resetLayoutBtn" title="Reset button positions to default">Reset Layout</button>
+        <button class="editModeBtn" id="editModeBtn" title="Toggle drag-and-drop layout editing">✏️ Edit Layout</button>
     </header>
     <div>
         
@@ -133,7 +121,7 @@
                             <button type='button' class = 'void'>Void Item</button>
                             <button type="button" class = 'forHere'>For Here</button>
                             <button type="button" class = 'discount'>Discount</button>
-                            <button type="button" class = 'LOCK'><i class="fa-solid fa-lock fa-2xl"></i></button>
+                            <button type="button" class = 'LOCK'>Clear</button>
                             <button type="button" class = 'toGo'>To Go</button>
                             <button class ='findOrder'>Save Order</button>
                             
@@ -215,6 +203,7 @@
                             </div>
                         </section>
                     </form>
+                    <section class="foodTabs hidden"></section>
                     <section class="drinkType">
                         
                     </section>
@@ -225,22 +214,36 @@
                         <div>Add Shot</div>
                         <div>Ask Me</div>
                         <div class='nextDrink'>Next Drink</div>
+                        <div class='layoutMode'>Layout Mode</div>
                     </section>
                 </section>
                 
             </section>
+            <aside class="promoPanel" aria-label="POS promotional panel">
+                <div class="storePhoto"></div>
+                <div class="partnerGreeting">
+                    <span class="sirenMark">★</span>
+                    <span>Always good to see you</span>
+                </div>
+                <div class="coolCoconut">
+                    <span>NEW</span>
+                    <strong>COOL<br>COCONUT</strong>
+                    <p>Blue Coconut Lemonade Energy Refresher</p>
+                </div>
+                <div class="recommendations">
+                    <h2>Our recommendations</h2>
+                    <div class="recommendationGrid">
+                        <div>Iced Brown Sugar Oatmilk Shaken Espresso</div>
+                        <div>Cold Brew</div>
+                        <div>Egg White & Roasted Red Pepper Egg Bites</div>
+                        <div>Bacon, Gouda & Egg Sandwich</div>
+                    </div>
+                </div>
+            </aside>
         </section>
         
     </div>
-    <i id="mousePointer" class="fa-solid fa-hand-pointer notVisible"></i>
-    <section class="api">
-        <ul>API Links:
-            <li><a class="apiDrinks" href="http://localhost:8000/api/coreDrinks">All Drinks</a></li>
-            <li><a class="apiCustomers" href="http://localhost:8000/api/allcustomers">All Customers</a></li>
-            <li><a class="apiRoasts" href="http://localhost:8000/api/roasts">Roasts</a></li>
-            <li><a class="apiCust" href="http://localhost:8000/api/customizations">Customizations</a></li>
-        </ul>
-    </section>
+    <i id="mousePointer" class="notVisible"></i>
     <footer class = 'hidden'>
         <button class="local">Local</button>
         <button class="heroku">Heroku</button>

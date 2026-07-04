@@ -27,7 +27,8 @@ modifiers.syrup={
     'Hazelnut Syrup':new Syrup('H','syrup'),'Toffee Nut Syrup':new Syrup('TN','syrup'),'Vanilla Syrup':new Syrup('V','syrup'),'Classic Syrup':new Syrup('C','syrup'),'Peppermint Syrup':new Syrup('P','syrup'),
     'Raspberry Syrup':new Syrup('R','syrup'),'Toasted Vanilla Syrup':new Syrup('TV','syrup'),'Brown Sugar Syrup':new Syrup('BS','syrup'),'Chai':new Syrup('CH','syrup'),'Honey Blend':new Syrup('HB','syrup'),
     'Liquid Cane Sugar':new Syrup('LC','syrup'), 'Sugar Free Vanilla Syrup':new Syrup('SFV','syrup'),'Mocha Sauce':new Syrup('M','syrup'),'White Mocha Sauce':new Syrup('WM','syrup'), 'Caramel Sauce':new Syrup('CS','syrup'),
-    'Dark Caramel Sauce':new Syrup('DC','syrup')
+    'Dark Caramel Sauce':new Syrup('DC','syrup'), 'Pistachio Sauce':new Syrup('PST','syrup'), 'Lavender Powder':new Syrup('LAV','syrup'), 'Horchata Syrup':new Syrup('HCH','syrup'),
+    'Mango Syrup':new Syrup('MG','syrup'), 'Ube Syrup':new Syrup('UBE','syrup'), 'Toasted Coconut Syrup':new Syrup('TC','syrup'), 'Banana Syrup':new Syrup('BN','syrup')
 }
 modifiers.milk={
     'Extra':new Syrup('XTR','button'),'Light':new Syrup('LT','button'),'Nonfat Milk':new Syrup('N','milk'),'1% Milk':new Syrup('1%','milk'),
@@ -35,7 +36,8 @@ modifiers.milk={
     'with 2% Milk':new Syrup('w/2%','milk'),'with Whole Milk':new Syrup('w/W','milk'),'Soy Milk':new Syrup('S','milk'),'Oatmilk':new Syrup('O','milk'),
     'with Soy Milk':new Syrup('w/S','milk'),'with Oatmilk':new Syrup('w/O','milk'),'Coconut Milk':new Syrup('C','milk'),'Almondmilk':new Syrup('A','milk'),
     'with Coconut Milk':new Syrup('w/C','milk'),'with Almondmilk':new Syrup('w/A','milk'),'Half & Half (Breve)':new Syrup('B','milk'),'Heavy Cream':new Syrup('HC','milk'),
-    'with Half & Half Cream':new Syrup('CRM','milk'),'with Heavy Cream':new Syrup('w/HC','milk'),
+    'with Half & Half Cream':new Syrup('CRM','milk'),'with Heavy Cream':new Syrup('w/HC','milk'), 'Vanilla Protein Cream':new Syrup('VPC','milk'),
+    'Caramel Protein Cream':new Syrup('CPC','milk'), 'SF Vanilla Protein Cream':new Syrup('SFVPC','milk'), 'SF Caramel Protein Cream':new Syrup('SFCPC','milk')
 }
 modifiers.custom={
     'No':new Custom('NO','button'),'Sub':new Custom('SUB','button'),'Extra':new Custom('XTR','button'),'Light':new Custom('LT','button'),
@@ -46,7 +48,12 @@ modifiers.custom={
     'Lemonade':new Custom('LEM','custom','Lemonade'),'Mocha Drizzle':new Custom('MD','custom','Mocha Drizzle'),'Caramel Drizzle':new Custom('CD','custom','Caramel Drizzle'),'Strawberry Acai Refresher Base':new Custom('SRB','custom','Strwbrry Base'),
     'Dragonfruit Refresher Base':new Custom('DRB','custom','Drgn Frt Base'),'Pineapple Refresher Base':new Custom('PRB','custom','Pineapple Base'),
     'Line the Cup w/Mocha':new Custom('Lw/M','custom','Line Cup Mocha'),'Line the Cup w/Caramel':new Custom('Lw/C','custom','Line Cup Caramel'),'Foam':new Custom('F','custom','Foam'),'Vanilla Sweet Cream Cold Foam':new Custom('VSCF','custom','Sweet Cream CF'),
-    'Salted Cream Cold Foam':new Custom('SCCF','custom','Slted Crm CF'),'Chocolate Cream Cold Foam':new Custom('CCCF','custom','Choc Crm CF'),'With Room':new Custom('R','custom','Room'),'Extra Hot':'XTRHOT'
+    'Salted Cream Cold Foam':new Custom('SCCF','custom','Slted Crm CF'),'Chocolate Cream Cold Foam':new Custom('CCCF','custom','Choc Crm CF'),
+    'ND Vanilla Cream Cold Foam':new Custom('NDVCF','custom','ND Vanilla CF'),'Coconut Cream Cold Foam':new Custom('CCF','custom','Coconut CF'),
+    'Pistachio Cream Cold Foam':new Custom('PCF','custom','Pistachio CF'),'Toasted Coconut Cold Foam':new Custom('TCF','custom','Toasted Coco CF'),
+    'Blue Coconut Refresher Base':new Custom('BCB','custom','Blue Coco Base'),'Tropical Butterfly Base':new Custom('TBB','custom','Tropical Base'),
+    'Energy':new Custom('ENRG','custom','Energy'),'Banana Bread Topping':new Custom('BBT','custom','Banana Bread'),'Dubai Chocolate Topping':new Custom('DCT','custom','Dubai Choc'),
+    'With Room':new Custom('R','custom','Room'),'Extra Hot':'XTRHOT'
 }
 
 

@@ -4,16 +4,12 @@ const express = require('express')
 const app = express()
 const PORT = 8000
 const CORS = require('cors')
-app.use(express.static('public'))
-app.use('/PartnerHours',express.static(__dirname + '/public/PartnerHours'))
+app.use(express.static('public', { index: false }))
 app.use('/Menu',express.static(__dirname + '/public/Menu'))
-app.use('/coreDrinks', express.static(__dirname + '/public/Core Drinks'))
-app.use(express.static('IMG'))
 const bodyParser= require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(CORS())
 app.use(express.urlencoded({ extended: true }))
-app.use('/IMG', express.static(__dirname + '/IMG'));
 app.use(express.json())
 
 

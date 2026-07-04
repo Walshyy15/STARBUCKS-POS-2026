@@ -19,20 +19,8 @@ function translateSize(input){
     }
 } 
 module.exports={
-    index: (req,res)=>{
-        res.sendFile(path+'/index.html')
-    },
-    roasts: (req,res)=>{
-        res.sendFile(path+'/roasts.html')
-    },
     menu: (req,res)=>{
         res.sendFile(path+'/Menu/menu.html')
-    },
-    coredrinks: (req,res)=>{
-        res.sendFile(path+'/CoreDrinks/coreDrinks.html')
-    },
-    partnerHours:(req,res)=>{
-        res.sendFile(path+'/PartnerHours/index.html')
     },
     order: (req,res)=>{
             let checker = (arr, target) => target.every(v => arr.includes(v));

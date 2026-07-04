@@ -58,6 +58,281 @@ function nameShortener(name){
     
 }
 
+// ======================================
+// COLOR MAPPING SYSTEM
+// Replaces CSS sibling selectors with direct color application
+// so colors survive drag-and-drop reordering
+// ======================================
+
+const DRINK_COLORS = {
+    // Espresso drinks — colors by drink name (lowercased, no spaces/special chars)
+    espresso: {
+        _default: 'rgb(207, 146, 207)',
+        americano: '#95d2e9',
+        espresso: '#95d2e9',
+        espressomacchiatto: '#95d2e9',
+        espressoconpanna: '#95d2e9',
+        icedshakenespresso: 'rgb(207, 146, 207)',
+        brownsugaromagnetoatshakenespresso: 'rgb(207, 146, 207)',
+        chocolatealmondmilkshakenespresso: 'rgb(207, 146, 207)',
+        toastedvanillaoatshakenespresso: 'rgb(223, 229, 114)',
+        icedbluecoconutmatcha: 'rgb(223, 229, 114)',
+        icedhorchatashakenespresso: 'rgb(223, 229, 114)',
+        latte: 'rgb(223, 229, 114)',
+        cinnamondolcelatte: 'rgb(223, 229, 114)',
+        cappuccino: 'rgb(211, 207, 186)',
+        flatwhite: 'rgb(224, 250, 251)',
+        honeyalmondmilkflatwhite: 'rgb(224, 250, 251)',
+        caramelmacchiatto: 'rgb(207, 146, 207)',
+        whitemocha: 'rgb(199, 159, 109)',
+        mocha: 'rgb(199, 159, 109)',
+    },
+    // Blended drinks
+    blended: {
+        _default: 'rgb(201, 180, 153)',
+        mochacookiecrumblefrappucino: 'rgb(224, 250, 251)',
+        chocolatecookiecrumblecrmefrappucino: 'rgb(224, 250, 251)',
+        blendedstrawberrylemonade: 'yellow',
+        smoresfrappucino: 'rgb(224, 250, 251)',
+    },
+    // Brewed drinks
+    brewed: {
+        _default: 'rgb(207, 146, 207)',
+        icedcoffee: '#95d2e9',
+        icedcoffeewmilk: '#95d2e9',
+        decaficedcoffee: '#95d2e9',
+        decaficedcoffeewmilk: '#95d2e9',
+        icedcoffeerefill: '#95d2e9',
+        coldbrew: 'rgb(224, 250, 251)',
+        coldbrewwmilk: 'rgb(224, 250, 251)',
+        coldbrewwcoldfoam: 'rgb(224, 250, 251)',
+        coldbrewrefill: 'rgb(224, 250, 251)',
+        vanillasweetcreamcoldbrew: 'rgb(224, 250, 251)',
+        saltedcaramelcreamcoldbrew: 'rgb(224, 250, 251)',
+        chocolatecreamcoldbrew: 'rgb(224, 250, 251)',
+        pumpkincreamcoldbrew: 'rgb(224, 250, 251)',
+        nitrocoldbrew: '#95d2e9',
+        vanillasweetcreamnitrocoldbrew: '#95d2e9',
+        pumpkincreamnitrocoldbrew: '#95d2e9',
+        cafemisto: 'rgb(219, 178, 113)',
+        pikeplaceroast: 'rgb(221, 213, 200)',
+        darkroast: 'rgb(208, 170, 208)',
+        blonderoast: '#e0de81',
+        decafpikeplaceroast: 'rgb(221, 213, 200)',
+        hotcoffeerefill: 'rgb(221, 213, 200)',
+    },
+    // Tea drinks
+    tea: {
+        _default: '#ebe1a2',
+        classicchaitealatte: '#ebe1a2',
+        matchagreenteatte: '#aedd88',
+        royalenglishbreakfasttealatte: '#bbae8a',
+        londonfogtealatte: '#bbae8a',
+        customtealatte: '#d0d16d',
+        blackicedtea: '#6cb8d4',
+        greenicedtea: '#6cb8d4',
+        peachgreenicedtea: '#6cb8d4',
+        passiontangoicedtea: '#6cb8d4',
+        customicedtea: '#6cb8d4',
+        blacktealemonade: '#ece93b',
+        greentealemonade: '#ece93b',
+        peachgreentealemonade: '#ece93b',
+        passiontangotealemonade: '#ece93b',
+        customtealemonade: '#ece93b',
+        royalenglishbreakfasttea: '#bbae8a',
+        earlgreytea: '#aae6ba',
+        chaitea: '#aae6ba',
+        emperorscloudtea: '#aae6ba',
+        jadecitrusminttea: '#aae6ba',
+        mintmajestytea: '#aae6ba',
+        peachtranquilitytea: '#aae6ba',
+        honeycitrusminttea: '#efed93',
+    },
+    // Other drinks
+    other: {
+        _default: 'rgb(211, 207, 186)',
+        hotchocolate: 'rgb(211, 207, 186)',
+        whitehotchocolate: 'rgb(211, 207, 186)',
+        coldmilk: 'rgb(224, 250, 251)',
+        steamedmilk: 'rgb(224, 250, 251)',
+        syrupcrme: '#aedd88',
+        vanillacrme: '#aedd88',
+        cinnamondolcecrme: '#aedd88',
+        lemonade: '#ece93b',
+        matchalemonade: '#ece93b',
+        coldapplejuice: 'rgb(223, 229, 114)',
+        steamedapplejuice: 'rgb(223, 229, 114)',
+        caramelapplespice: 'rgb(223, 229, 114)',
+        strawberryacairefresher: 'rgb(207, 146, 207)',
+        mangodragonfruitrefresher: 'rgb(207, 146, 207)',
+        pineapplepassionfruitrefresher: 'rgb(207, 146, 207)',
+        bluecoconutrefresher: 'rgb(207, 146, 207)',
+        bluecoconutlemonaderefresher: 'rgb(207, 146, 207)',
+        bluecoconutdrink: 'rgb(207, 146, 207)',
+        tropicalbutterflyrefresher: 'rgb(207, 146, 207)',
+        tropicalbutterflylemonaderefresher: 'rgb(207, 146, 207)',
+        blendedmangodragonfruitlemonadeenergyrefresher: 'rgb(207, 146, 207)',
+        blendedmangostrawberrylemonadeenergyrefresher: 'rgb(207, 146, 207)',
+        cupofwater: '#6cb8d4',
+        strawberryacailemonaderefresher: 'rgb(207, 146, 207)',
+        mangodragonfruitlemonaderefresher: 'rgb(207, 146, 207)',
+        pineapplepassionfruitlemonaderefresher: 'rgb(207, 146, 207)',
+        cupofice: '#a1d5e8',
+        pinkdrink: 'rgb(207, 146, 207)',
+        dragondrink: 'rgb(207, 146, 207)',
+        paradisedrink: 'rgb(207, 146, 207)',
+        pupcup: '#a1d5e8',
+    }
+};
+
+// Customization menu colors — applied by item name
+const CUSTOM_MENU_COLORS = {
+    shotsMenu: {
+        _default: '#95d2e9',
+        'Iced': '#95d2e9',
+        'Blonde': '#eac784',
+        'Decaf': 'rgb(169, 150, 110)',
+        '1/2 Decaf': 'rgb(169, 150, 110)',
+        '2/3 Decaf': 'rgb(169, 150, 110)',
+        '1/3 Decaf': 'rgb(169, 150, 110)',
+        'Single': 'rgb(178, 116, 199)',
+        'Double': 'rgb(178, 116, 199)',
+        'Triple': 'rgb(178, 116, 199)',
+        'Quad': 'rgb(178, 116, 199)',
+        'More shots': 'rgb(178, 116, 199)',
+        'Affogato Shot': 'rgb(225, 177, 126)',
+        'Frappucino Roast': '#a98977',
+        'Kids': '#d7c54f',
+        'Updosed': '#95dea9',
+        'Long Shot': '#95dea9',
+        'Ristretto': '#95dea9',
+        'Short': '#d7c54f',
+        'Tall': '#d7c54f',
+        'Grande': '#d7c54f',
+        'Venti': '#d7c54f',
+        'Trenta': '#d7c54f',
+    },
+    syrup: {
+        _default: 'rgb(54, 54, 54)',
+        _defaultColor: 'white',
+        'No': 'rgb(54, 54, 54)',
+        'Sub': 'rgb(54, 54, 54)',
+        'Pumps': 'rgb(223, 229, 114)',
+        'Extra': 'rgb(54, 54, 54)',
+        'Light': 'rgb(54, 54, 54)',
+        'Caramel Syrup': 'rgb(211, 207, 186)',
+        'Cinnamon Dolce Syrup': 'rgb(211, 207, 186)',
+        'Hazelnut Syrup': 'rgb(211, 207, 186)',
+        'Toffee Nut Syrup': 'rgb(211, 207, 186)',
+        'Vanilla Syrup': 'rgb(211, 207, 186)',
+        'Classic Syrup': 'rgb(211, 207, 186)',
+        'Peppermint Syrup': 'rgb(211, 207, 186)',
+        'Raspberry Syrup': 'rgb(211, 207, 186)',
+        'Toasted Vanilla Syrup': 'rgb(211, 207, 186)',
+        'Brown Sugar Syrup': 'rgb(211, 207, 186)',
+        'Chai': '#aedd88',
+        'Honey Blend': 'rgb(211, 207, 186)',
+        'Liquid Cane Sugar': 'rgb(211, 207, 186)',
+        'Sugar Free Vanilla Syrup': 'rgb(224, 250, 251)',
+        'Mocha Sauce': 'rgb(207, 146, 207)',
+        'White Mocha Sauce': 'rgb(207, 146, 207)',
+        'Caramel Sauce': 'rgb(207, 146, 207)',
+        'Dark Caramel Sauce': 'rgb(207, 146, 207)',
+    },
+    milk: {
+        _default: '#95d2e9',
+        'Extra': 'rgb(54, 54, 54)',
+        'Light': 'rgb(54, 54, 54)',
+        'Nonfat Milk': '#95d2e9',
+        '1% Milk': '#95d2e9',
+        'with Nonfat Milk': '#95d2e9',
+        'with 1% Milk': '#95d2e9',
+        '2% Milk': '#95d2e9',
+        'Whole Milk': '#95d2e9',
+        'with 2% Milk': 'rgb(223, 229, 114)',
+        'with Whole Milk': 'rgb(223, 229, 114)',
+        'Soy Milk': 'rgb(223, 229, 114)',
+        'Oatmilk': 'rgb(223, 229, 114)',
+        'with Soy Milk': 'rgb(207, 146, 207)',
+        'with Oatmilk': 'rgb(207, 146, 207)',
+        'Coconut Milk': 'rgb(207, 146, 207)',
+        'Almondmilk': 'rgb(207, 146, 207)',
+        'with Coconut Milk': 'rgb(207, 146, 207)',
+        'with Almondmilk': 'rgb(207, 146, 207)',
+        'Half & Half (Breve)': 'rgb(207, 146, 207)',
+        'Heavy Cream': 'rgb(207, 146, 207)',
+        'with Half & Half Cream': 'rgb(207, 146, 207)',
+        'with Heavy Cream': 'rgb(207, 146, 207)',
+    },
+    custom: {
+        _default: 'rgb(207, 146, 207)',
+        'No': 'rgb(54, 54, 54)',
+        'Sub': 'rgb(54, 54, 54)',
+        'Extra': 'rgb(54, 54, 54)',
+        'Light': 'rgb(54, 54, 54)',
+        'Ice': '#95d2e9',
+        'Water': '#95d2e9',
+        'Whipped Cream': '#95d2e9',
+        'Vanilla Sweet Cream': 'rgb(224, 250, 251)',
+        'Agave': 'rgb(224, 250, 251)',
+        'Splenda': 'rgb(224, 250, 251)',
+        'Sugar': 'rgb(224, 250, 251)',
+        'Stevia': 'rgb(224, 250, 251)',
+        'Honey': 'rgb(224, 250, 251)',
+        'Raw Sugar': 'rgb(224, 250, 251)',
+        'Strawberry Puree': 'rgb(207, 146, 207)',
+        'Frappuccino Chips': 'rgb(207, 146, 207)',
+        'Vanilla Bean Powder': 'rgb(207, 146, 207)',
+        'Matcha': 'rgb(207, 146, 207)',
+        'Add blueberries': 'rgb(207, 146, 207)',
+        'Strawberry Inclusions': 'rgb(207, 146, 207)',
+        'Mango Dragonfruit Inclusions': 'rgb(207, 146, 207)',
+        'Pineapple Inclusions': 'rgb(207, 146, 207)',
+        'Lemonade': '#ece93b',
+        'Mocha Drizzle': '#95d2e9',
+        'Caramel Drizzle': '#95d2e9',
+        'Strawberry Acai Refresher Base': 'rgb(225, 177, 126)',
+        'Dragonfruit Refresher Base': 'rgb(225, 177, 126)',
+        'Pineapple Refresher Base': 'rgb(225, 177, 126)',
+        'Line the Cup w/Mocha': '#95d2e9',
+        'Line the Cup w/Caramel': '#95d2e9',
+        'Foam': 'rgb(224, 250, 251)',
+        'Vanilla Sweet Cream Cold Foam': 'rgb(224, 250, 251)',
+        'Salted Cream Cold Foam': 'rgb(224, 250, 251)',
+        'Chocolate Cream Cold Foam': 'rgb(224, 250, 251)',
+        'With Room': 'rgb(224, 250, 251)',
+        'Extra Hot': '#ece93b',
+    }
+};
+
+function getDrinkColor(categoryName, drinkName) {
+    const catColors = DRINK_COLORS[categoryName];
+    if (!catColors) return 'rgb(207, 146, 207)';
+    const key = nameShortener(drinkName);
+    return catColors[key] || catColors._default || 'rgb(207, 146, 207)';
+}
+
+function getCustomMenuColor(menuName, itemName) {
+    const catColors = CUSTOM_MENU_COLORS[menuName];
+    if (!catColors) return 'rgb(207, 146, 207)';
+    return catColors[itemName] || catColors._default || 'rgb(207, 146, 207)';
+}
+
+function getCustomMenuTextColor(menuName, itemName) {
+    const darkItems = ['No', 'Sub', 'Extra', 'Light'];
+    if (menuName === 'syrup') {
+        // Most syrup items are dark bg, except Pumps and the actual syrups after Light
+        const lightBgItems = ['Pumps', 'Caramel Syrup', 'Cinnamon Dolce Syrup', 'Hazelnut Syrup',
+            'Toffee Nut Syrup', 'Vanilla Syrup', 'Classic Syrup', 'Peppermint Syrup',
+            'Raspberry Syrup', 'Toasted Vanilla Syrup', 'Brown Sugar Syrup', 'Chai',
+            'Honey Blend', 'Liquid Cane Sugar', 'Sugar Free Vanilla Syrup',
+            'Mocha Sauce', 'White Mocha Sauce', 'Caramel Sauce', 'Dark Caramel Sauce'];
+        if (lightBgItems.includes(itemName)) return 'black';
+        return 'white';
+    }
+    if (darkItems.includes(itemName)) return 'white';
+    return 'black';
+}
 
 // Defines a "iced array" for identifying which key of the drinksArray Object to use
 let drinkIsIced=[]
@@ -67,6 +342,114 @@ let numberOfDrinksAdded=0;
 
 //defines an array of drinks for storing the currently used drinks
 let drinksArray = []
+let layoutEditMode = false
+let currentDrinkCategory = 'espresso'
+let currentLayoutCategory = 'espresso'
+let coreDrinkData = null
+const layoutStoragePrefix = 'posButtonLayout:'
+const apiBaseUrl = window.location.origin
+const endpoints = {
+    coreDrinks: `${apiBaseUrl}/api/coreDrinks`,
+    customizations: `${apiBaseUrl}/api/customizations`,
+    customers: `${apiBaseUrl}/api/customers`,
+    allNames: `${apiBaseUrl}/api/allnames`,
+    order: `${apiBaseUrl}/order`
+}
+const foodMenuData = {
+    pastries: [
+        {name:'Blueberry Streusel Muffin (BSM)', color:'#d8f0ee'},
+        {name:'Petite Vanilla Bean Scone (PVBS)', color:'#f1eee8'},
+        {name:'Dubai Chocolate Bite (DCB)', color:'#d8f0ee'},
+        {name:'Cheese Danish (CD)', color:'#f1eee8'},
+        {name:'Cinnamon Pull-Apart (CPA)', color:'#e1b177'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'}
+    ],
+    loaves: [
+        {name:'Banana Walnut & Pecan Loaf (BNL)', color:'#dfcf67'},
+        {name:'Iced Lemon Loaf (LL)', color:'#dfcf67'},
+        {name:'Pumpkin & Pepita Loaf (PKL)', color:'#dfcf67'},
+        {name:'Strawberry Matcha Loaf (SML)', color:'#b8d58f'},
+        {name:'Chocolate Pistachio Loaf (CPL)', color:'#b8d58f'},
+        {name:'Cinnamon Coffee Cake (CCC)', color:'#d8f0ee'},
+        {name:'Birthday Cake Pop (BCP)', color:'#efe8f4'},
+        {name:'Chocolate Cake Pop (ChCP)', color:'#efe8f4'},
+        {name:'Unicorn Cake Pop (UCP)', color:'#efe8f4'},
+        {name:'Frog Cake Pop (FCP)', color:'#efe8f4'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'}
+    ],
+    bagels: [
+        {name:'Plain Bagel (PB)', color:'#e0b681'},
+        {name:'Everything Bagel (EB)', color:'#e0b681'},
+        {name:'Cookie Croissant Swirl (CCS)', color:'#efe8f4'},
+        {name:'Yuzu Citrus Blossom (YCB)', color:'#efe8f4'},
+        {name:'Butter Croissant (Ct)', color:'#d8f0ee'},
+        {name:'Chocolate Croissant (ChCt)', color:'#d8f0ee'},
+        {name:'Ham & Swiss Croissant (HSC)', color:'#d8f0ee'},
+        {name:'Plain Cream Cheese (CC)', color:'#e0b681'},
+        {name:'Butter', color:'#e0b681'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'}
+    ],
+    lunch: [
+        {name:'Grilled Cheese on Sourdough (GC)', color:'#e0b681'},
+        {name:'Tomato & Mozzarella on Focaccia (TMoF)', color:'#e0b681'},
+        {name:'Ham & Swiss on Baguette (HSoB)', color:'#e0b681'},
+        {name:'Spicy Falafel Pocket (SFP)', color:'#dfcf67'},
+        {name:'Jalapeno Chicken Pocket (JCP)', color:'#dfcf67'},
+        {name:'Avocado Spread', color:'#b8d58f'},
+        {name:'String Cheese', color:'#d8f0ee'},
+        {name:'Ellenos Muesli Yogurt', color:'#efe8f4'},
+        {name:'Ellenos Strawberry Shortcake Yogurt', color:'#efe8f4'},
+        {name:'MUSH Chocolate PB Oats', color:'#efe8f4'},
+        {name:'Cheese & Fruit Protein Box', color:'#d8f0ee'},
+        {name:'Eggs & Cheddar Protein Box', color:'#d8f0ee'},
+        {name:'Cook Open Faced', color:'#f1eee8'},
+        {name:'Extra Toasted', color:'#f1eee8'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'}
+    ],
+    brownies: [
+        {name:'Chocolate Chip Cookie (ChCC)', color:'#e0b681'},
+        {name:'Berry Blondie (BBB)', color:'#efe8f4'},
+        {name:'Double Chocolate Brownie (ChB)', color:'#f1eee8'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'}
+    ],
+    breakfast: [
+        {name:'Sausage Cheddar & Egg Sandwich (S)', color:'#dfcf67'},
+        {name:'Turkey Bacon & Egg White Sandwich (TB)', color:'#dfcf67'},
+        {name:'Dbl Smkd Bacon & Egg Sandwich (DSB)', color:'#e0b681'},
+        {name:'Bacon & Gouda & Egg Sandwich (B)', color:'#e0b681'},
+        {name:'Impossible Breakfast Sandwich (IM)', color:'#dfcf67'},
+        {name:'Egg, Pesto & Mozzarella Sandwich (EPMS)', color:'#dfcf67'},
+        {name:'Spinach Feta Wrap (SFW)', color:'#efe8f4'},
+        {name:'Bacon Sausage & Egg Wrap (BSW)', color:'#efe8f4'},
+        {name:'Bacon & Gruyere Egg Bites (BGEB)', color:'#b8d58f'},
+        {name:'Egg White & Red Pepper Egg Bites (EWEB)', color:'#b8d58f'},
+        {name:'Potato, Cheddar & Chive Bake (PCCB)', color:'#dfcf67'},
+        {name:'Rolled & Steel Cut Oatmeal', color:'#e0b681'},
+        {name:'Sriracha', color:'#efe8f4'},
+        {name:'Avocado Spread', color:'#b8d58f'},
+        {name:"Don't Make", color:'#dfcf67'},
+        {name:'For Here Plate', color:'#dfcf67'},
+        {name:'Cook Open Faced', color:'#f1eee8'},
+        {name:'Extra Toasted', color:'#f1eee8'},
+        {name:'No Meat', color:'#f1eee8'},
+        {name:'No Cheese', color:'#f1eee8'},
+        {name:'No Egg', color:'#f1eee8'},
+        {name:'Truffle & Brie Egg Bites (TBEB)', color:'#e0b681', status:'out of stock'}
+    ]
+}
+const foodTabLabels = {
+    pastries: 'Pastries',
+    loaves: 'Loaves & Cakes',
+    bagels: 'Bagels, Breads, & Croissants',
+    lunch: 'Lunch & Snacks',
+    brownies: 'Brownies, Cookies, & Bars',
+    breakfast: 'Hot Breakfast Items'
+}
 
 //a constructor for having continuity across the front-end and back-end for drinks
 class Drink{
@@ -100,8 +483,9 @@ function createCat(data){
         category.innerText= capitalizeFirstLetter(element)
         document.querySelector('.drinkType').appendChild(category)
         category.addEventListener('click',(click)=>{
-            document.querySelector('.items').className=`items ${(click.target.innerText.toLowerCase())}`
-            pageRender(data[click.target.innerText.toLowerCase()],data)
+            currentDrinkCategory = click.target.innerText.toLowerCase()
+            document.querySelector('.items').className=`items dynamic-layout ${currentDrinkCategory}`
+            pageRender(data[currentDrinkCategory],data,currentDrinkCategory)
             document.querySelectorAll('.highlight').forEach((div)=>{
                 div.classList.remove('highlight')
             })
@@ -110,26 +494,232 @@ function createCat(data){
     })
 }
 
-//Generates the menu items and adds event listeners to each element in the "items" section.
-function pageRender(click,data){
-    
-    removeAllChildNodes(document.querySelector('.items'))
-    
-    click.forEach((element,i)=>{
-        
+function getLayoutKey(category){
+    return `${layoutStoragePrefix}${category}`
+}
+
+function getSavedLayout(category){
+    try{
+        return JSON.parse(localStorage.getItem(getLayoutKey(category))) || []
+    }catch(error){
+        return []
+    }
+}
+
+function saveLayout(category){
+    const orderedNames = Array.from(document.querySelectorAll('.items div')).map((item)=>item.dataset.drinkName || item.dataset.itemName)
+    localStorage.setItem(getLayoutKey(category), JSON.stringify(orderedNames))
+}
+
+function clearLayout(category){
+    localStorage.removeItem(getLayoutKey(category))
+}
+
+function sortItemsBySavedLayout(items,category){
+    const savedLayout = getSavedLayout(category)
+    if(savedLayout.length === 0){
+        return items
+    }
+    return [...items].sort((a,b)=>{
+        const aPosition = savedLayout.indexOf(a.name)
+        const bPosition = savedLayout.indexOf(b.name)
+        if(aPosition === -1 && bPosition === -1){
+            return 0
+        }
+        if(aPosition === -1){
+            return 1
+        }
+        if(bPosition === -1){
+            return -1
+        }
+        return aPosition - bPosition
+    })
+}
+
+function setLayoutMode(active){
+    if(active && coreDrinkData && !document.querySelector('.items').classList.contains('dynamic-layout')){
+        pageRender(coreDrinkData[currentDrinkCategory],coreDrinkData,currentDrinkCategory)
+    }
+    layoutEditMode = active
+    document.querySelector('.layoutMode').classList.toggle('active', active)
+    document.querySelector('.layoutMode').innerText = active ? 'Save Layout' : 'Layout Mode'
+    document.querySelector('.items').classList.toggle('layout-editing', active)
+    document.querySelectorAll('.items div').forEach((item)=>{
+        item.draggable = active
+    })
+}
+
+function moveDraggedButton(dragged,target){
+    if(!dragged || !target || dragged === target){
+        return
+    }
+    const itemsArea = document.querySelector('.items')
+    const nodes = Array.from(itemsArea.children)
+    const draggedIndex = nodes.indexOf(dragged)
+    const targetIndex = nodes.indexOf(target)
+    if(draggedIndex < targetIndex){
+        itemsArea.insertBefore(dragged, target.nextSibling)
+    }else{
+        itemsArea.insertBefore(dragged, target)
+    }
+    saveLayout(currentLayoutCategory)
+}
+
+function wireLayoutDragHandlers(item){
+    item.addEventListener('dragstart',(event)=>{
+        if(!layoutEditMode){
+            event.preventDefault()
+            return
+        }
+        item.classList.add('dragging')
+        event.dataTransfer.setData('text/plain', item.dataset.drinkName)
+    })
+    item.addEventListener('dragover',(event)=>{
+        if(!layoutEditMode){
+            return
+        }
+        event.preventDefault()
+        item.classList.add('drop-target')
+    })
+    item.addEventListener('dragleave',()=>{
+        item.classList.remove('drop-target')
+    })
+    item.addEventListener('drop',(event)=>{
+        event.preventDefault()
+        item.classList.remove('drop-target')
+        moveDraggedButton(document.querySelector('.items .dragging'), item)
+    })
+    item.addEventListener('dragend',()=>{
+        item.classList.remove('dragging')
+        document.querySelectorAll('.drop-target').forEach((target)=>target.classList.remove('drop-target'))
+    })
+}
+
+function pageRender(click,data,category = currentDrinkCategory){
+    currentDrinkCategory = category
+    currentLayoutCategory = category
+    const itemsArea = document.querySelector('.items')
+    removeAllChildNodes(itemsArea)
+    itemsArea.className=`items dynamic-layout ${category}`
+    sortItemsBySavedLayout(click,category).forEach((element)=>{
+        const buttonName = element.menuLabel || element.name
         let item = document.createElement('div')
-        item.style.gridArea = `${alphabet[i]}`
-        item.innerText=`${element['name']}`
-        item.classList.add(`${nameShortener(element['name'])}`)
-        
-        document.querySelector('.items').appendChild(item)
+        item.innerText=`${buttonName}`
+        item.dataset.drinkName = element.name
+        item.classList.add(`${nameShortener(buttonName)}`)
+        item.style.backgroundColor = getDrinkColor(category, buttonName)
+        item.draggable = layoutEditMode
+        itemsArea.appendChild(item)
+        wireLayoutDragHandlers(item)
         item.addEventListener('click',()=>{
+            if(layoutEditMode){
+                return
+            }
             addToOrder(element)
         })
     })
-   
+    itemsArea.classList.toggle('layout-editing', layoutEditMode)
 }
 
+function setTopCategory(activeClass){
+    document.querySelectorAll('.categories button').forEach((button)=>{
+        button.classList.toggle('selected', button.classList.contains(activeClass))
+    })
+}
+
+function showDrinkBuilder(){
+    if(!coreDrinkData){
+        return
+    }
+    setTopCategory('drinkBuilder')
+    document.querySelector('.itemSelection').classList.remove('food-mode')
+    document.querySelector('.foodTabs').classList.add('hidden')
+    document.querySelector('.customizations').classList.remove('hidden')
+    document.querySelector('.drinkType').classList.remove('hidden')
+    pageRender(coreDrinkData[currentDrinkCategory] || coreDrinkData.espresso, coreDrinkData, currentDrinkCategory)
+}
+
+function renderFoodTabs(activeTab){
+    const tabs = document.querySelector('.foodTabs')
+    removeAllChildNodes(tabs)
+    tabs.classList.remove('hidden')
+    Object.keys(foodMenuData).forEach((key)=>{
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.innerText = foodTabLabels[key]
+        button.classList.toggle('selected', key === activeTab)
+        button.addEventListener('click',()=>renderFoodMenu(key))
+        tabs.appendChild(button)
+    })
+}
+
+function renderFoodMenu(tab = 'pastries'){
+    setTopCategory('food')
+    setLayoutMode(false)
+    document.querySelector('.itemSelection').classList.add('food-mode')
+    document.querySelector('.customizations').classList.add('hidden')
+    document.querySelector('.drinkType').classList.add('hidden')
+    renderFoodTabs(tab)
+
+    const itemsArea = document.querySelector('.items')
+    removeAllChildNodes(itemsArea)
+    itemsArea.className = `items dynamic-layout food-items ${tab}`
+    currentLayoutCategory = `food:${tab}`
+    foodMenuData[tab].forEach((foodItem)=>{
+        const item = document.createElement('div')
+        item.innerText = foodItem.name
+        item.dataset.drinkName = foodItem.name
+        item.classList.add(nameShortener(foodItem.name))
+        item.style.backgroundColor = foodItem.color
+        if(foodItem.status){
+            const status = document.createElement('span')
+            status.className = 'itemStatus'
+            status.innerText = foodItem.status
+            item.appendChild(status)
+        }
+        item.addEventListener('click',()=>addFoodToOrder(foodItem.name))
+        itemsArea.appendChild(item)
+    })
+}
+
+function renderPlaceholderCategory(categoryName){
+    setTopCategory(categoryName)
+    setLayoutMode(false)
+    document.querySelector('.itemSelection').classList.remove('food-mode')
+    document.querySelector('.foodTabs').classList.add('hidden')
+    document.querySelector('.customizations').classList.add('hidden')
+    document.querySelector('.drinkType').classList.add('hidden')
+    const itemsArea = document.querySelector('.items')
+    removeAllChildNodes(itemsArea)
+    itemsArea.className = `items dynamic-layout ${categoryName}`
+    ;['Item Availability','SKU Entry','Price Check','Item Search','Regional & Test'].forEach((name)=>{
+        const item = document.createElement('div')
+        item.innerText = name
+        item.style.backgroundColor = name === 'Regional & Test' ? 'rgb(54, 54, 54)' : 'rgb(238, 238, 232)'
+        item.style.color = name === 'Regional & Test' ? 'white' : 'black'
+        itemsArea.appendChild(item)
+    })
+}
+
+function addFoodToOrder(name){
+    removeAllSelected()
+    const item = document.createElement('div')
+    item.classList.add(`drink${numberOfDrinksAdded}`)
+    item.classList.add('selected')
+    item.innerHTML = `<div class="sizeIdentifier"></div><div class="drinkName">${name}</div>`
+    document.querySelector('.pickedDrinks').appendChild(item)
+    item.addEventListener('click',(click)=>selectDrink(click.currentTarget))
+    drinksArray[numberOfDrinksAdded] = null
+    drinkIsIced[numberOfDrinksAdded] = undefined
+    numberOfDrinksAdded += 1
+    checkForSelection()
+}
+
+document.querySelector('.drinkBuilder').addEventListener('click', showDrinkBuilder)
+document.querySelector('.food').addEventListener('click', ()=>renderFoodMenu('pastries'))
+document.querySelector('.misc').addEventListener('click', ()=>renderPlaceholderCategory('misc'))
+document.querySelector('.beans').addEventListener('click', ()=>renderPlaceholderCategory('beans'))
+document.querySelector('.rtde').addEventListener('click', ()=>renderPlaceholderCategory('rtde'))
 
 // adds an event listener to the "LOCK" button which functions as the "clear all button" 
 // removes all the elements from the "drinks content divs", removes the 'drinks que section', and resets values of the containing elements
@@ -656,8 +1246,8 @@ function addTheIcedWord(){
 
 
 
-let heroku = 'https://coffee-trainer.herokuapp.com/api/coredrinks'
-let local = 'http://localhost:8000/api/coredrinks'
+let heroku = endpoints.coreDrinks
+let local = endpoints.coreDrinks
 
 const statusLight = document.querySelector('.statusLight')
 async function apiRequest(url){  //Calls the API and brings drink data to the 
@@ -669,12 +1259,15 @@ async function apiRequest(url){  //Calls the API and brings drink data to the
         document.querySelector('.menuWrapper').classList.add('loading')
     document.querySelector('.customerArea').classList.add('hidden')
         const data = await response.json()
+        coreDrinkData = data
         document.querySelector('.menuWrapper').classList.remove('loading')
         document.querySelector('.customerArea').classList.remove('hidden')
         statusLight.style.backgroundImage='linear-gradient(161deg,rgb(0, 0, 0),rgb(0, 255, 51))'
         
         createCat(data)
-        document.querySelector('.items').className=`items espresso`
+        currentDrinkCategory = 'espresso'
+        document.querySelector('.items').className=`items dynamic-layout espresso`
+        pageRender(data.espresso,data,'espresso')
         renderCustomsMenu('shotsMenu')
         
     }catch(error){
@@ -705,7 +1298,7 @@ function shuffle(array) {
 
 async function allcustom(){
     try{
-        const response = await fetch('http://localhost:8000/api/allnames')
+        const response = await fetch(endpoints.allNames)
         const data = await response.json()
         console.log(data)
     }
@@ -738,19 +1331,45 @@ async function apiRequestForCustomizations(url){
 
 
 function renderCustomsMenu(menu){
-    removeAllChildNodes(document.querySelector('.items'))
-    Object.keys(menuData[menu]).forEach((element,i)=>{
+    const itemsArea = document.querySelector('.items')
+    removeAllChildNodes(itemsArea)
+    currentLayoutCategory = menu
+    const savedOrder = getSavedLayout(menu)
+    const remaining = Object.keys(menuData[menu])
+    const reordered = []
+    savedOrder.forEach((savedName)=>{
+        const idx = remaining.indexOf(savedName)
+        if(idx !== -1){
+            reordered.push(remaining.splice(idx, 1)[0])
+        }
+    })
+    const menuKeys = [...reordered, ...remaining]
+    
+    menuKeys.forEach((element,i)=>{
         
         let item = document.createElement('div')
-        item.style.gridArea = `${alphabet[i]}`
         item.innerText=`${element}`
         item.classList.add(`${nameShortener(element)}`)
-        document.querySelector('.items').appendChild(item)
+        item.dataset.itemName = element
+        
+        // Apply color directly
+        const color = getCustomMenuColor(menu, element);
+        item.style.backgroundColor = color;
+        const textColor = getCustomMenuTextColor(menu, element);
+        item.style.color = textColor;
+        
+        item.draggable = layoutEditMode
+        itemsArea.appendChild(item)
+        wireLayoutDragHandlers(item)
         item.addEventListener('click',(click)=>{
+            if(layoutEditMode){
+                return
+            }
             processCustom(element,menuData[menu][element],click)
         })
     })
-    document.querySelector('.items').className=`items ${menu}`
+    itemsArea.className=`items dynamic-layout ${menu}`
+    itemsArea.classList.toggle('layout-editing', layoutEditMode)
 }
 let tempDrink = {
     hot: new Drink(false,[''],['','','','',''],[[1,1,1,1,1]],[''],[''],[''],''),
@@ -1407,37 +2026,18 @@ function errorMessage(message,color){
     
 }
 
-let postUrl
-let production = 'dev'
-let uhhh = "https://coffee-trainer.herokuapp.com/menu"
-function dynamicURL(word){
-    let loc = window.location.href.includes('coffee')
-    if(loc){
-        production='live'
-    }else{
-        production='dev'
-    }
-    
-}
-dynamicURL()
-if(production === 'dev'){
-    localStorage.setItem('LastClicked',["http://localhost:8000/api/customizations",local,'http://localhost:8000/api/customers','https://localhost:8000/order'])
-    removeAllChildNodes(document.querySelector('.items'))
-    removeAllChildNodes(document.querySelector('.drinkType'))
-    apiRequestForCustomizations("http://localhost:8000/api/customizations")
-    apiRequest(local)
-    apiRequestCustomer('http://localhost:8000/api/customers')
-    postUrl ='http://localhost:8000/order'
-}else
-if(production=== 'live'){
-    localStorage.setItem('LastClicked',["https://coffee-trainer.herokuapp.com/api/customizations",heroku,"https://coffee-trainer.herokuapp.com/api/customers,'https://coffee-trainer.herokuapp.com/order'"])
-    removeAllChildNodes(document.querySelector('.items'))
-    removeAllChildNodes(document.querySelector('.drinkType'))
-    apiRequestForCustomizations("https://coffee-trainer.herokuapp.com/api/customizations")
-    apiRequestCustomer('https://coffee-trainer.herokuapp.com/api/customers')
-    apiRequest(heroku)
-    postUrl ='https://coffee-trainer.herokuapp.com/order'
-}
+let postUrl = endpoints.order
+localStorage.setItem('LastClicked',[endpoints.customizations,endpoints.coreDrinks,endpoints.customers,endpoints.order])
+removeAllChildNodes(document.querySelector('.items'))
+removeAllChildNodes(document.querySelector('.drinkType'))
+apiRequestForCustomizations(endpoints.customizations)
+apiRequest(endpoints.coreDrinks)
+apiRequestCustomer(endpoints.customers)
+
+const layoutModeButton = document.querySelector('.layoutMode')
+layoutModeButton.addEventListener('click',()=>{
+    setLayoutMode(!layoutEditMode)
+})
 
 document.querySelectorAll('.findOrder').forEach((elem)=>{
     elem.addEventListener('click',postAnswer)
@@ -1562,15 +2162,6 @@ async function postAnswer(){
     }
 }
 
-function changeTheLinks(url){
-    document.querySelector('.apiDrinks').href = url+'/api/coreDrinks'
-    document.querySelector('.apiRoasts').href = url+'/api/Roasts'
-    document.querySelector('.apiCust').href = url+'/api/customizations'
-    document.querySelector('.apiCustomers').href = url+'/api/allCustomers'
-}
-changeTheLinks(window.location.href.toString().split('/pos')[0])
-
-
 function getAbsoluteHeight(el) {
   // Get the DOM Node if you pass in a string
   el = (typeof el === 'string') ? document.querySelector(el) : el; 
@@ -1587,7 +2178,7 @@ function getAbsoluteHeight(el) {
 
 let totalViableHeights = getAbsoluteHeight('header') + getAbsoluteHeight('.customerArea') + getAbsoluteHeight('.menuWrapper')
 //console.log(totalViableHeights)
-if(screen.height>= totalViableHeights){
+if(screen.height>= totalViableHeights && document.querySelector('.api')){
     document.querySelector('.api').style.marginTop= `${screen.height - totalViableHeights }px`
 }
 //document.querySelector('.api').style.marginTop= `${document.querySelector('.customerArea').offsetHeight}px`
@@ -1712,5 +2303,19 @@ function pseudoClick(element){
     }, 1000);
     
     
+}
+
+const resetLayoutBtn = document.getElementById('resetLayoutBtn')
+if (resetLayoutBtn) {
+    resetLayoutBtn.addEventListener('click', () => {
+        const allCategories = ['espresso', 'blended', 'brewed', 'tea', 'other', 'shotsMenu', 'syrup', 'milk', 'custom']
+        allCategories.forEach((cat)=>clearLayout(cat))
+        if (['shotsMenu', 'syrup', 'milk', 'custom'].includes(currentLayoutCategory)) {
+            renderCustomsMenu(currentLayoutCategory)
+        } else if (coreDrinkData && coreDrinkData[currentDrinkCategory]) {
+            pageRender(coreDrinkData[currentDrinkCategory], coreDrinkData, currentDrinkCategory)
+        }
+        errorMessage('All button layouts have been reset to default!', 'green')
+    })
 }
 
